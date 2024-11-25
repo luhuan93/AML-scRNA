@@ -71,8 +71,8 @@ sc.pp.scale(AML2, max_value=10)
 sc.tl.pca(AML2, svd_solver='arpack')
 sc.pl.pca_variance_ratio(AML2, log=True, n_pcs = 50)
 
-sce.pp.scanorama_integrate(AML2, key = 'sam',knn=40,sigma=20)
-sc.pp.neighbors(AML2,n_pcs = 40, n_neighbors = 20)
+sce.pp.harmony_integrate(AML2, key = 'sam',knn=40,sigma=20)
+sc.pp.neighbors(AML2,n_pcs = 40, n_neighbors = 20, use_rep="X_pca_harmony")
 
 sc.tl.leiden(AML2, resolution = 0.89, key_added = "leiden_089")
 sc.tl.umap(AML2)
