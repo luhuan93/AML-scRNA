@@ -3,13 +3,13 @@ import pandas as pd
 import scanpy as sc
 import sc_toolbox.api as sct
 import matplotlib as mpl
-mpl.rcParams['pdf.fonttype'] = 42 #±£÷§ ‰≥ˆpdfŒƒ◊÷ø…“‘±‡º≠
+mpl.rcParams['pdf.fonttype'] = 42 #‰øùËØÅËæìÂá∫pdfÊñáÂ≠óÂèØ‰ª•ÁºñËæë
 import scanpy.external as sce
 import matplotlib.pyplot as plt
 import os
 os.chdir('/data/AMLscRNA/mergeblood/20220501/Tcell')
 AML = sc.read_h5ad('/data/AMLscRNA/mergeblood/AML10pC_blood5n.h5ad') 
-AML2 = sc.read_h5ad('/data/AMLscRNA/mergeblood/20220501/AML2_annotate0501.h5ad') #“ªπ≤132025
+AML2 = sc.read_h5ad('/data/AMLscRNA/mergeblood/20220501/AML2_annotate0501.h5ad') #‰∏ÄÂÖ±132025
 Tcell = AML[(AML2.obs['celltype'] == 'T'),:]
 Tcell.write_h5ad("/data/AMLscRNA/mergeblood/20220501/Tcell/Tcell0501.h5ad")
 Tcell=sc.read_h5ad("/data/AMLscRNA/mergeblood/20220501/Tcell/Tcell0501.h5ad")
@@ -65,8 +65,8 @@ sc.pl.pca_variance_ratio(Tcell2, log=True, n_pcs = 50)#30
 
 pd.crosstab(columns=Tcell2.obs['state'], index=Tcell2.obs['orig.ident'])
 
-sce.pp.scanorama_integrate(Tcell2, key = 'sam',knn=40,sigma=20)
-sc.pp.neighbors(Tcell2, n_pcs = 40, n_neighbors = 20)
+sce.pp.harmony_integrate(Tcell2, key = 'sam',knn=40,sigma=20)
+sc.pp.neighbors(Tcell2, n_pcs = 40, n_neighbors = 20, use_rep="X_pca_harmony")
 
 sc.tl.leiden(Tcell2, resolution = 2, key_added = "leiden_2")
 sc.tl.umap(Tcell2)
@@ -174,7 +174,7 @@ sc.tl.score_genes(dsf, exhausted_gene, ctrl_size=len(exhausted_gene), gene_pool=
 #GSVA
 T=sc.read_h5ad("/data/AMLscRNA/mergeblood/20220429/Tcell/Tcell0429.h5ad")
 Tcell=sc.read_loom("/data/AMLscRNA/mergeblood/Tcell0412.loom", sparse=True, cleanup=False, X_name='spliced', obs_names='CellID', var_names='Gene', dtype='float32')
-T2 = sc.read_h5ad('/data/AMLscRNA/mergeblood/20220501/Tcell/T2_annotate.h5ad') #“ªπ≤132025
+T2 = sc.read_h5ad('/data/AMLscRNA/mergeblood/20220501/Tcell/T2_annotate.h5ad') #‰∏ÄÂÖ±132025
 sc.pp.normalize_total(T, target_sum=1e4)
 T.obs['ID'] = T.obs.index.values.tolist()
 T.obs['RK']	='del'
